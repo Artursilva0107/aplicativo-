@@ -1,5 +1,4 @@
-
-import { app } from "./firebase-config.js";
+import { app } from "firebase-config.js"; // CORRIGIDO: Removido o "./"
 
 import { 
     getAuth, 
@@ -32,10 +31,7 @@ registerForm.addEventListener('submit', async (e) => {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         
-        // 1. MENSAGEM DE SUCESSO DE REGISTRO (CONSOLE)
         console.log(`✅ Sucesso: O e-mail ${userCredential.user.email} foi criado e registrado no Firebase.`);
-        
-        // 2. MENSAGEM DE SUCESSO DE REGISTRO (VISUAL)
         displayMessage(`Conta criada com sucesso! Redirecionando...`);
         registerForm.reset();
         
@@ -53,10 +49,7 @@ loginForm.addEventListener('submit', async (e) => {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         
-        // 1. MENSAGEM DE SUCESSO DE LOGIN (CONSOLE)
         console.log(`🔓 Login bem-sucedido! Usuário: ${userCredential.user.email}`);
-        
-        // 2. MENSAGEM DE SUCESSO DE LOGIN (VISUAL)
         displayMessage(`Login com sucesso! Bem-vindo(a)! Redirecionando...`, false);
         loginForm.reset();
         
@@ -68,7 +61,6 @@ loginForm.addEventListener('submit', async (e) => {
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // Lógica de Alternância de Formulário (Ocultada por concisão)
     const loginSection = document.getElementById('login-section');
     const registerSection = document.getElementById('register-section');
     const showRegisterLink = document.getElementById('show-register');
@@ -86,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loginSection.classList.remove('hidden');
     });
     
-    // Monitoramento de Autenticação (Redirecionamento)
     onAuthStateChanged(auth, (user) => {
         if (user) {
             console.log("Usuário logado:", user.email);
@@ -98,10 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Registro do Service Worker (PWA Instalável)
+    // Removido o '/' no sw.js para evitar erros no GitHub Pages
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
+            navigator.serviceWorker.register('sw.js') 
                 .then(registration => {
                     console.log('Service Worker registrado com sucesso:', registration.scope);
                 })
