@@ -1,4 +1,3 @@
-// scripts/main.js (Versão Final para Deploy)
 
 import { app } from "./firebase-config.js";
 
@@ -33,15 +32,16 @@ registerForm.addEventListener('submit', async (e) => {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         
-        // NOVO: console.log de sucesso no registro
-        console.log(`✅ Sucesso: O e-mail ${userCredential.user.email} foi registrado no Firebase.`);
+        // 1. MENSAGEM DE SUCESSO DE REGISTRO (CONSOLE)
+        console.log(`✅ Sucesso: O e-mail ${userCredential.user.email} foi criado e registrado no Firebase.`);
         
-        displayMessage(`Registro realizado com sucesso! Redirecionando...`);
+        // 2. MENSAGEM DE SUCESSO DE REGISTRO (VISUAL)
+        displayMessage(`Conta criada com sucesso! Redirecionando...`);
         registerForm.reset();
         
     } catch (error) {
         displayMessage(`Erro no Registro: ${error.message}`, true);
-        console.error("Detalhes do erro do Firebase:", error); // Adicionando console.error para debug
+        console.error("Detalhes do erro do Firebase:", error);
     }
 });
 
@@ -52,18 +52,23 @@ loginForm.addEventListener('submit', async (e) => {
 
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        displayMessage(`Login bem-sucedido! Redirecionando...`, false);
+        
+        // 1. MENSAGEM DE SUCESSO DE LOGIN (CONSOLE)
+        console.log(`🔓 Login bem-sucedido! Usuário: ${userCredential.user.email}`);
+        
+        // 2. MENSAGEM DE SUCESSO DE LOGIN (VISUAL)
+        displayMessage(`Login com sucesso! Bem-vindo(a)! Redirecionando...`, false);
         loginForm.reset();
         
     } catch (error) {
         displayMessage(`Erro no Login: ${error.message}`, true);
-        console.error("Detalhes do erro do Firebase:", error); // Adicionando console.error para debug
+        console.error("Detalhes do erro do Firebase:", error);
     }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // Lógica de Alternância de Formulário
+    // Lógica de Alternância de Formulário (Ocultada por concisão)
     const loginSection = document.getElementById('login-section');
     const registerSection = document.getElementById('register-section');
     const showRegisterLink = document.getElementById('show-register');
@@ -84,16 +89,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Monitoramento de Autenticação (Redirecionamento)
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            // Se logado, vai para a página principal (dashboard.html)
             console.log("Usuário logado:", user.email);
-            // CORREÇÃO: Adicionamos o redirecionamento aqui.
-            // Apenas redireciona se não estiver já no dashboard, evitando loops
             if (!window.location.pathname.includes('dashboard.html')) {
                 window.location.href = 'dashboard.html';
             }
         } else {
             console.log("Nenhum usuário logado. Exibindo tela de login.");
-             // Se deslogado, permanece no index.html.
         }
     });
 
